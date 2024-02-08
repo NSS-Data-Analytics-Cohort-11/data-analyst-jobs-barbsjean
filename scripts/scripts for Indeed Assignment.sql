@@ -102,3 +102,85 @@ FROM data_analyst_jobs
 WHERE review_count > 5000
 GROUP BY review_count, company
 ORDER BY AVG(star_rating) DESC;
+
+--ANSWER: American Express, 4.1999 rating
+
+**************************************
+
+--11.	Find all the job titles that contain the word ‘Analyst’. How many different job titles are there? 
+
+SELECT title
+FROM data_analyst_jobs
+WHERE title LIKE '%Analyst%';
+
+--ANSWER: 3272
+
+**************************************
+
+--12.	How many different job titles do not contain either the word ‘Analyst’ or the word ‘Analytics’? What word do these positions have in common?
+
+SELECT *
+FROM data_analyst_jobs
+WHERE title NOT LIKE '%Analyst%'
+AND title NOT LIKE '%Analytics%'
+AND title NOT LIKE '%analyst%'
+AND title NOT LIKE '%analytics%'
+AND title NOT LIKE '%ANALYST%'
+AND title NOT LIKE '%ANALYTICS%';
+
+--ANSWER: 8. Data.
+
+**************************************
+
+--**BONUS:**
+--You want to understand which jobs requiring SQL are hard to fill. Find the number of jobs by industry (domain) that require SQL and have been posted longer than 3 weeks. 
+-- Disregard any postings where the domain is NULL. 
+-- Order your results so that the domain with the greatest number of `hard to fill` jobs is at the top. 
+-- Which three industries are in the top 4 on this list?
+
+SELECT title, skill, domain, days_since_posting
+FROM data_analyst_jobs
+WHERE skill LIKE '%SQL%'
+AND domain IS NOT NULL
+AND days_since_posting > 21
+GROUP BY title, skill, domain, days_since_posting
+ORDER BY days_since_posting DESC;
+
+--ANSWER: Health Care, Insurance, Banks and Financial Services, & Education and Schools. 
+
+--How many jobs have been listed for more than 3 weeks for each of the top 4?  50 for Health Care, 20 for Insurance, 
+
+SELECT title, skill, domain, days_since_posting
+FROM data_analyst_jobs
+WHERE skill LIKE '%SQL%'
+AND domain LIKE 'Health Care'
+OR domain LIKE 'Insurance'
+OR domain LIKE 'Banks and Financial Servies'
+OR domain LIKE 'Education and Schools'
+AND days_since_posting > 21
+GROUP BY title, skill, domain, days_since_posting
+ORDER BY days_since_posting DESC;
+
+SELECT title, skill, domain, days_since_posting
+FROM data_analyst_jobs
+WHERE skill LIKE '%SQL%'
+AND domain LIKE 'Health Care'
+AND days_since_posting > 21
+GROUP BY title, skill, domain, days_since_posting
+ORDER BY days_since_posting DESC;
+
+SELECT title, skill, domain, days_since_posting
+FROM data_analyst_jobs
+WHERE skill LIKE '%SQL%'
+AND domain LIKE 'Insurance'
+AND days_since_posting > 21
+GROUP BY title, skill, domain, days_since_posting
+ORDER BY days_since_posting DESC;
+
+SELECT title, skill, domain, days_since_posting
+FROM data_analyst_jobs
+WHERE skill LIKE '%SQL%'
+AND domain LIKE 'Banks and Financial Servies'
+AND days_since_posting > 21
+GROUP BY title, skill, domain, days_since_posting
+ORDER BY days_since_posting DESC;
