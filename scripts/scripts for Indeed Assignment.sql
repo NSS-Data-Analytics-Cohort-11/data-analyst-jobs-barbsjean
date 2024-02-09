@@ -56,12 +56,13 @@ WHERE review_count BETWEEN 500 AND 1000;
 
 --6.	Show the average star rating for companies in each state. The output should show the state as `state` and the average rating for the state as `avg_rating`. Which state shows the highest average rating?
 
-SELECT location AS state, AVG(star_rating) as avg_rating
+SELECT DISTINCT location AS state, AVG(star_rating) AS avg_rating
 FROM data_analyst_jobs
-GROUP BY location, star_rating
-ORDER BY star_rating DESC;
+WHERE star_rating IS NOT NULL
+GROUP BY location
+ORDER BY avg_rating DESC;
 
---ANSWER: WI, VA, MD, TN, CA, NY, GA and MA all show 5 as their average ratings.
+--ANSWER: NE
 
 **************************************
 
@@ -89,9 +90,10 @@ ANSWER: 230
 SELECT DISTINCT company, AVG(star_rating) AS avg_star_rating, review_count
 FROM data_analyst_jobs
 WHERE review_count > 5000
+AND company IS NOT NULL
 GROUP BY review_count, location, company;   --may have to rework this query to get the right answer... something to do with adding in the companies
 
---ANSWER: 83
+--ANSWER: 45
 
 **************************************
 
@@ -100,8 +102,9 @@ GROUP BY review_count, location, company;   --may have to rework this query to g
 SELECT DISTINCT company, AVG(star_rating) AS avg_star_rating, review_count
 FROM data_analyst_jobs
 WHERE review_count > 5000
-GROUP BY review_count, company
-ORDER BY AVG(star_rating) DESC;
+AND company IS NOT NULL
+GROUP BY review_count, location, company
+ORDER BY avg_star_rating DESC; 
 
 --ANSWER: American Express, 4.1999 rating
 
@@ -111,9 +114,9 @@ ORDER BY AVG(star_rating) DESC;
 
 SELECT title
 FROM data_analyst_jobs
-WHERE title LIKE '%Analyst%';
+WHERE title ILIKE '%Analyst%';
 
---ANSWER: 3272
+--ANSWER: 3338
 
 **************************************
 
@@ -121,12 +124,8 @@ WHERE title LIKE '%Analyst%';
 
 SELECT *
 FROM data_analyst_jobs
-WHERE title NOT LIKE '%Analyst%'
-AND title NOT LIKE '%Analytics%'
-AND title NOT LIKE '%analyst%'
-AND title NOT LIKE '%analytics%'
-AND title NOT LIKE '%ANALYST%'
-AND title NOT LIKE '%ANALYTICS%';
+WHERE title NOT ILIKE '%Analyst%'
+AND title NOT ILIKE '%Analytics%';
 
 --ANSWER: 8. Data.
 
