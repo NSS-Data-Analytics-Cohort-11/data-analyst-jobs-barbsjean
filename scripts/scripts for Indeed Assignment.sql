@@ -136,51 +136,14 @@ AND title NOT LIKE '%ANALYTICS%';
 --You want to understand which jobs requiring SQL are hard to fill. Find the number of jobs by industry (domain) that require SQL and have been posted longer than 3 weeks. 
 -- Disregard any postings where the domain is NULL. 
 -- Order your results so that the domain with the greatest number of `hard to fill` jobs is at the top. 
--- Which three industries are in the top 4 on this list?
+-- Which three industries are in the top 4 on this list? How many jobs have been listed for more than 3 weeks for each of the top 4?
 
-SELECT title, skill, domain, days_since_posting
+SELECT domain, COUNT(*)
 FROM data_analyst_jobs
-WHERE skill LIKE '%SQL%'
+WHERE skill ILIKE '%SQL%'
 AND domain IS NOT NULL
 AND days_since_posting > 21
-GROUP BY title, skill, domain, days_since_posting
-ORDER BY days_since_posting DESC;
+GROUP BY domain
+ORDER BY COUNT(*) DESC;
 
---ANSWER: Health Care, Insurance, Banks and Financial Services, & Education and Schools. 
-
---How many jobs have been listed for more than 3 weeks for each of the top 4?  50 for Health Care, 20 for Insurance, 
-
-SELECT title, skill, domain, days_since_posting
-FROM data_analyst_jobs
-WHERE skill LIKE '%SQL%'
-AND domain LIKE 'Health Care'
-OR domain LIKE 'Insurance'
-OR domain LIKE 'Banks and Financial Servies'
-OR domain LIKE 'Education and Schools'
-AND days_since_posting > 21
-GROUP BY title, skill, domain, days_since_posting
-ORDER BY days_since_posting DESC;
-
-SELECT title, skill, domain, days_since_posting
-FROM data_analyst_jobs
-WHERE skill LIKE '%SQL%'
-AND domain LIKE 'Health Care'
-AND days_since_posting > 21
-GROUP BY title, skill, domain, days_since_posting
-ORDER BY days_since_posting DESC;
-
-SELECT title, skill, domain, days_since_posting
-FROM data_analyst_jobs
-WHERE skill LIKE '%SQL%'
-AND domain LIKE 'Insurance'
-AND days_since_posting > 21
-GROUP BY title, skill, domain, days_since_posting
-ORDER BY days_since_posting DESC;
-
-SELECT title, skill, domain, days_since_posting
-FROM data_analyst_jobs
-WHERE skill LIKE '%SQL%'
-AND domain LIKE 'Banks and Financial Servies'
-AND days_since_posting > 21
-GROUP BY title, skill, domain, days_since_posting
-ORDER BY days_since_posting DESC;
+--ANSWER: Internet and Software (124), Banks and Financial Services (122), & Consulting and Business Services (114)
